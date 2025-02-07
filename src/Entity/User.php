@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -46,6 +48,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private ?bool $isVerified = false;
+
+    /**
+     * @var Collection<int, Gallery>
+     */
+    #[ORM\OneToMany(targetEntity: Gallery::class, mappedBy: 'user')]
+    private Collection $listGalleries;
+
+    public function __construct()
+    {
+        $this->listGalleries = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -178,6 +191,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Gallery>
+     */
+    public function getListGalleries(): Collection
+    {
+        return $this->listGalleries;
+    }
+
+    public function addListGallery(Gallery $listGallery): static
+    {
+        if (!$this->listGalleries->contains($listGallery)) {
+            $this->listGalleries->add($listGallery);
+            $listGallery->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeListGallery(Gallery $listGallery): static
+    {
+        if ($this->listGalleries->removeElement($listGallery)) {
+            // set the owning side to null (unless already changed)
+            if ($listGallery->getUser() === $this) {
+                $listGallery->setUser(null);
+            }
+        }
 
         return $this;
     }
