@@ -24,3 +24,42 @@
 | show_exif_data      |
 | isActive      |
 | isPrivate      |
+
+| **Photo**  |
+|-----------|
+| name |
+| isActive   |
+| legend     |
+
+| **ExifData**  |
+|-----------|
+| photoId |
+| name  |
+| value   |
+
+| **Contest**  |
+|-----------|
+| year |
+| name  |
+| link   |
+
+
+| **Bip***  |
+|-----------|
+| file |
+| date  |
+
+
+| **Article**  |
+|-----------|
+| title |
+| content |
+| author   |
+| createdAt   |
+| updatedAt   |
+| isActive   |
+| slug   |
+
+
+
+
