@@ -1,5 +1,10 @@
 # cbi-site
 
+## Commands 
+
+- symfony server:start
+- symfony console doctrine:database:create
+
 ## Tables
 
 | **User**  |
