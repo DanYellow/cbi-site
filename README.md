@@ -15,6 +15,7 @@
 | email      |
 | password      |
 | isActive      |
+| isVerified      |
 | biography      |
 
 | **Gallery**  |
