@@ -4,6 +4,8 @@
 
 - symfony server:start
 - symfony console doctrine:database:create
+- php bin/console make:entity
+- php bin/console doctrine:migrations:migrate
 
 ## Tables
 
@@ -50,7 +52,7 @@
 | link   |
 
 
-| **Bip***  |
+| **Bip**  |
 |-----------|
 | file |
 | date  |
