@@ -33,7 +33,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
-    public function findUserByEmailOrUsername(string $usernameOrEmail): ?User {
+    public function loadUserByIdentifier(string $usernameOrEmail): ?User {
         return $this->createQueryBuilder("u")
             ->where('u.email = :identifier')
             ->orWhere('u.username = :identifier')
