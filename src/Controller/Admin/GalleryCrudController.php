@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Gallery;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -25,7 +27,7 @@ class GalleryCrudController extends AbstractCrudController
             IdField::new('id')->hideOnForm(),
             TextField::new('name', 'Nom'),
             DateTimeField::new('date', 'Date'),
-            BooleanField::new('isActive', "Rendre public"),
+            BooleanField::new('isActive', "Activer la galerie"),
             BooleanField::new('isPrivate', "Rendre privée la galerie")
                 ->setColumns(3)
                 ->setFormTypeOptions([
@@ -33,7 +35,13 @@ class GalleryCrudController extends AbstractCrudController
                         "data-is-private-switch" => null,
                     ],
                 ]),
-            TextField::new('password', 'Mot de passe')
+            TextField::new('password', 'Mot de passe d\'accès à la galerie')
+                ->setFormTypeOptions([
+                    "attr" => [
+                        "data-password-input" => null,
+                        "disabled" => "",
+                    ],
+                ])
                 ->setColumns(3),
             TextField::new('uuid')->hideOnForm(),
             TextEditorField::new('slug')->hideOnForm(),
@@ -50,6 +58,14 @@ class GalleryCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ->setSearchFields(null)
             // ->addFormTheme('back/collection-row-participant-contest.html.twig')
+        ;
+    }
+
+    public function configureAssets(Assets $assets): Assets
+    {
+        return $assets
+            ->addAssetMapperEntry(Asset::new('backend_app'))
+            // ->addJsFile('backend/admin.js')
         ;
     }
 }
