@@ -3,8 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\GalleryRepository;
+
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+
+use Gedmo\Mapping\Annotation\Slug;
+
 
 #[ORM\Entity(repositoryClass: GalleryRepository::class)]
 class Gallery
@@ -20,7 +24,8 @@ class Gallery
     #[ORM\Column]
     private ?\DateTimeImmutable $date = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(length: 255, unique: true)]
+    #[Slug(fields: ["name"])]
     private ?string $slug = null;
 
     #[ORM\Column(type: Types::GUID)]
