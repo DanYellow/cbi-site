@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Gallery;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -14,6 +15,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class GalleryCrudController extends AbstractCrudController
 {
@@ -24,10 +27,22 @@ class GalleryCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        // $entity =
-        // dd($this->getContext()->getEntity()->getInstance());
+        $gallery = $this->getContext()->getEntity()->getInstance();
+        $isPrivate = false;
+        if ($gallery) {
+            $isPrivate = $gallery->isPrivate();
+        }
+
+        $passwordInputAttributes = array(
+            "data-password-input" => null,
+        );
+
+        if (!$isPrivate) {
+            $passwordInputAttributes['disabled'] = '';
+        }
+
         return [
-            IdField::new('id')->hideOnForm(),
+            IdField::new('id')->hideOnForm()->hideOnIndex(),
             TextField::new('name', 'Nom'),
             DateField::new('date', 'Date')->setFormTypeOptions([
                 "attr" => [
@@ -43,14 +58,13 @@ class GalleryCrudController extends AbstractCrudController
                 ]),
             TextField::new('password', 'Mot de passe d\'accès')
                 ->setFormTypeOptions([
-                    "attr" => [
-                        "data-password-input" => null,
-                        "disabled" => "",
-                    ],
+                    "attr" => $passwordInputAttributes,
                 ])
-                ->setColumns(3),
+                ->setColumns(3)
+                ->setFormType(PasswordType::class)
+                ->hideOnIndex(),
             TextField::new('uuid')->hideOnForm()->hideOnIndex(),
-            TextEditorField::new('slug')->hideOnForm(),
+            TextEditorField::new('slug')->hideOnForm()->hideOnIndex(),
         ];
     }
 
@@ -73,5 +87,16 @@ class GalleryCrudController extends AbstractCrudController
             ->addAssetMapperEntry(Asset::new('backend_app'))
             // ->addJsFile('backend/admin.js')
         ;
+    }
+
+    public function persistEntity(EntityManagerInterface $em, $entityInstance): void
+    {
+        if (!$entityInstance instanceof Gallery) return;
+
+        // $slugger = new AsciiSlugger();
+
+        $entityInstance->setUser($this->getUser());
+
+        parent::persistEntity($em, $entityInstance);
     }
 }
