@@ -29,7 +29,10 @@ class GalleryCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
             TextField::new('name', 'Nom'),
-            DateField::new('date', 'Date'),
+            DateField::new('date', 'Date')->setFormTypeOptions([
+                "attr" => [
+                ]
+            ]),
             BooleanField::new('isActive', "Activer la galerie"),
             BooleanField::new('isPrivate', "Rendre privée la galerie")
                 ->setColumns(3)
@@ -38,7 +41,7 @@ class GalleryCrudController extends AbstractCrudController
                         "data-is-private-switch" => null,
                     ],
                 ]),
-            TextField::new('password', 'Mot de passe d\'accès à la galerie')
+            TextField::new('password', 'Mot de passe d\'accès')
                 ->setFormTypeOptions([
                     "attr" => [
                         "data-password-input" => null,
@@ -46,7 +49,7 @@ class GalleryCrudController extends AbstractCrudController
                     ],
                 ])
                 ->setColumns(3),
-            TextField::new('uuid')->hideOnForm(),
+            TextField::new('uuid')->hideOnForm()->hideOnIndex(),
             TextEditorField::new('slug')->hideOnForm(),
         ];
     }

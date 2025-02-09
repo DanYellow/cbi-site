@@ -9,6 +9,7 @@
 - php bin/console doctrine:migrations:migrate (2)
 - symfony console doctrine:database:drop --force
 - php bin/console cache:clear --env=dev
+- php bin/console security:hash-password
 
 ## Tables
 

@@ -11,6 +11,7 @@ use Gedmo\Mapping\Annotation\Slug;
 
 
 #[ORM\Entity(repositoryClass: GalleryRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Gallery
 {
     #[ORM\Id]
@@ -151,4 +152,10 @@ class Gallery
 
         return $this;
     }
+
+    // #[ORM\PrePersist]
+    // public function setCreatedAtValue(): void
+    // {
+    //     $this->createdAt = new \DateTimeImmutable();
+    // }
 }
