@@ -53,7 +53,7 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToCrud('Mes galeries photos', 'fa-solid fa-images', Gallery::class);
-        yield MenuItem::linkToCrud('Utilisateurs', 'fa-solid fa-user', User::class)
+        yield MenuItem::linkToCrud('Membres', 'fa-solid fa-user', User::class)
             ->setPermission('ROLE_ADMIN');
         yield MenuItem::section();
         yield MenuItem::linkToLogout('Déconnexion', 'fa fa-sign-out');
