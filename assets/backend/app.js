@@ -13,8 +13,7 @@ if (isPrivateGallerySwitch) {
             privateGalleryPassword.setAttribute("disabled", "");
         }
     };
-    // console.log(isPrivateGallerySwitch.checked)
-    // setInputStatus(isPrivateGallerySwitch.checked);
+
     isPrivateGallerySwitch.addEventListener("change", (e) => {
         setInputStatus(e.target.checked);
     });

@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
@@ -23,10 +24,12 @@ class GalleryCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        // $entity =
+        // dd($this->getContext()->getEntity()->getInstance());
         return [
             IdField::new('id')->hideOnForm(),
             TextField::new('name', 'Nom'),
-            DateTimeField::new('date', 'Date'),
+            DateField::new('date', 'Date'),
             BooleanField::new('isActive', "Activer la galerie"),
             BooleanField::new('isPrivate', "Rendre privée la galerie")
                 ->setColumns(3)
@@ -54,7 +57,7 @@ class GalleryCrudController extends AbstractCrudController
             ->setPageTitle('index', 'Liste des galeries')
             ->setEntityLabelInSingular('galerie')
             ->setPageTitle('edit', fn (Gallery $gallery) => sprintf('Modifier <b>galerie "%s"</b>', $gallery->getName()))
-            ->setPageTitle('new', 'Créer galerie')
+            ->setPageTitle('new', 'Créer nouvelle galerie')
             ->showEntityActionsInlined()
             ->setSearchFields(null)
             // ->addFormTheme('back/collection-row-participant-contest.html.twig')

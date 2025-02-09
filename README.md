@@ -7,6 +7,7 @@
 - php bin/console make:entity
 - php bin/console make:migration (1)
 - php bin/console doctrine:migrations:migrate (2)
+- symfony console doctrine:database:drop --force
 - php bin/console cache:clear --env=dev
 
 ## Tables
