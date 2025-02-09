@@ -40,8 +40,6 @@ class GalleryCrudController extends AbstractCrudController
 
         if (!$isPrivate) {
             $passwordInputAttributes['disabled'] = '';
-            // $passwordInputAttributes['required'] = '';
-        } else {
         }
 
         return [
@@ -108,4 +106,16 @@ class GalleryCrudController extends AbstractCrudController
 
         parent::persistEntity($em, $entityInstance);
     }
+
+    // public function updateEntity(EntityManagerInterface $em, $entityInstance): void
+    // {
+    //     if (!$entityInstance instanceof Gallery) return;
+
+
+    //     dd($entityInstance->getDate());
+
+    //     parent::persistEntity($em, $entityInstance);
+    // }
+
+
 }
