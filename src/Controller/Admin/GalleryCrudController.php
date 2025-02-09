@@ -35,10 +35,13 @@ class GalleryCrudController extends AbstractCrudController
 
         $passwordInputAttributes = array(
             "data-password-input" => null,
+            "autocomplete" => "on",
         );
 
         if (!$isPrivate) {
             $passwordInputAttributes['disabled'] = '';
+            // $passwordInputAttributes['required'] = '';
+        } else {
         }
 
         return [
@@ -55,13 +58,18 @@ class GalleryCrudController extends AbstractCrudController
                     "attr" => [
                         "data-is-private-switch" => null,
                     ],
-                ]),
+                ])->onlyOnForms(),
+            BooleanField::new('isPrivate', "Rendre privée la galerie")
+                ->renderAsSwitch(false)
+                ->onlyOnIndex(),
             TextField::new('password', 'Mot de passe d\'accès')
                 ->setFormTypeOptions([
                     "attr" => $passwordInputAttributes,
+                    'help' => "Seuls les internautes ayant le mot de passe pourront accéder à la galerie",
                 ])
                 ->setColumns(3)
-                ->setFormType(PasswordType::class)
+                // ->setFormType(PasswordType::class)
+                ->setRequired($isPrivate)
                 ->hideOnIndex(),
             TextField::new('uuid')->hideOnForm()->hideOnIndex(),
             TextEditorField::new('slug')->hideOnForm()->hideOnIndex(),
@@ -73,10 +81,11 @@ class GalleryCrudController extends AbstractCrudController
         return $crud
             ->setPageTitle('index', 'Liste des galeries')
             ->setEntityLabelInSingular('galerie')
-            ->setPageTitle('edit', fn (Gallery $gallery) => sprintf('Modifier <b>galerie "%s"</b>', $gallery->getName()))
+            ->setPageTitle('edit', fn (Gallery $gallery) => sprintf('Modifier galerie <b>"%s"</b>', $gallery->getName()))
             ->setPageTitle('new', 'Créer nouvelle galerie')
             ->showEntityActionsInlined()
             ->setSearchFields(null)
+            ->setDefaultSort(['date' => 'DESC'])
             // ->addFormTheme('back/collection-row-participant-contest.html.twig')
         ;
     }

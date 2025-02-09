@@ -48,6 +48,7 @@ class Gallery
     public function __construct()
     {
         $this->uuid = uniqid();
+
         $date = new \DateTimeImmutable();
         $this->date = $date;
     }

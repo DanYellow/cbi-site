@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
+#[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -179,12 +180,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->username;
     }
 
-    public function setUsername(string $username): static
-    {
-        $this->username = $username;
+    // public function setUsername(string $username): static
+    // {
+    //     $this->username = $username;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function isVerified(): ?bool
     {
@@ -238,5 +239,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->image = $image;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setUsername(): void
+    {
+        $firstnameFirstLetter = substr($this->firstname, 0, 1);
+        $lastnameNFirstLetters = substr($this->lastname, 0, 7);
+        $this->username = "{$firstnameFirstLetter}{$lastnameNFirstLetters}";
     }
 }

@@ -10,6 +10,7 @@
 - symfony console doctrine:database:drop --force
 - php bin/console cache:clear --env=dev
 - php bin/console security:hash-password
+- php bin/console debug:router
 
 ## Tables
 
