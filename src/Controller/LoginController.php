@@ -13,6 +13,8 @@ class LoginController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
+            $this->addFlash('warning', 'Vous êtes connecté(e), vous avez été redirigé(e)');
+
             return $this->redirectToRoute('admin');
         }
 
