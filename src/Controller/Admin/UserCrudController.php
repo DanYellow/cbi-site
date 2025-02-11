@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
@@ -11,6 +12,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 #[IsGranted('ROLE_ADMIN')]
 class UserCrudController extends AbstractCrudController
@@ -42,6 +46,26 @@ class UserCrudController extends AbstractCrudController
             ->setPageTitle('new', 'Créer nouveau membre')
             ->setDefaultSort(['lastname' => 'ASC'])
         ;
-            // ->setEntityPermission('ROLE_EDITOR');
+        // ->setEntityPermission('ROLE_EDITOR');
     }
+
+    // public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void {
+    //     $this->sendEmail();
+    // }
+
+    // private function sendEmail(MailerInterface $mailer)
+    // {
+    //     $email = (new Email())
+    //         ->from('hello@example.com')
+    //         ->to('you@example.com')
+    //         //->cc('cc@example.com')
+    //         //->bcc('bcc@example.com')
+    //         //->replyTo('fabien@example.com')
+    //         //->priority(Email::PRIORITY_HIGH)
+    //         ->subject('Time for Symfony Mailer!')
+    //         ->text('Sending emails is fun again!')
+    //         ->html('<p>See Twig integration for better HTML integration!</p>');
+
+    //     $mailer->send($email);
+    // }
 }

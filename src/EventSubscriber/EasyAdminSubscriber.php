@@ -5,11 +5,15 @@ namespace App\EventSubscriber;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityUpdatedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 class EasyAdminSubscriber implements EventSubscriberInterface
 {
-    public function __construct()
+    protected $mailer;
+    public function __construct(MailerInterface $mailer)
     {
+        $this->mailer = $mailer;
     }
 
     public static function getSubscribedEvents()
@@ -26,6 +30,15 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         if (!($entity instanceof User)) {
             return;
         }
+
+        $email = (new Email())
+            ->from('hello@example.com')
+            ->to($entity->getEmail())
+            ->subject('Votre compte a été activé')
+            ->text('Sending emails is fun again!')
+            ->html('<p>See Twig integration for better HTML integration!</p>');
+
+        $this->mailer->send($email);
         // dd($entity->isVerified());
         // $slug = $this->slugger->slugify($entity->getTitle());
         // $entity->setIsVerified(false);

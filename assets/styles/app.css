@@ -3,7 +3,8 @@
 @config '../../tailwind.config.js';
 
 body {
-    background-color: rgb(247, 247, 247);
+    background-color: hsl(210, 40%, 96.1%); 
+    /* rgb(247, 247, 247); */
 }
 
 
