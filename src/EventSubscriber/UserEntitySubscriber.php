@@ -3,27 +3,19 @@
 namespace App\EventSubscriber;
 
 use App\Entity\User;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Event\PostUpdateEventArgs;
-use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityUpdatedEvent;
-use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeCrudActionEvent;
-use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Doctrine\ORM\Events;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Mime\Address;
 
-use Doctrine\ORM\Events;
-
-use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
-use Doctrine\ORM\EntityManager;
 
 #[AsEntityListener(event: Events::postUpdate, method: 'postUpdate', entity: User::class)]
 class UserEntitySubscriber
 {
     protected MailerInterface $mailer;
-    private bool $previousVerifiedState;
 
     public function __construct(MailerInterface $mailer)
     {
