@@ -37,6 +37,8 @@
 | show_exif_data      |
 | isActive      |
 | isPrivate      |
+| createdAt      |
+| updatedAt      |
 
 | **Photo**  |
 |-----------|
