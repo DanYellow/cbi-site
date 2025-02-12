@@ -21,13 +21,10 @@ final class UserController extends AbstractController
         string $username,
         EntityManagerInterface $entityManager
     ): Response {
-
         $user = $entityManager->getRepository(User::class)->findOneBy(['username' => $username]);
         if ($username === "me") {
             $user = $this->getUser();
         }
-
-        // dd($user);
 
         return $this->render('user/index.html.twig', [
             'controller_name' => 'UserController',
