@@ -34,7 +34,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
-    public function loadUserByIdentifier(string $usernameOrEmail): ?User {
+    public function loadUserByIdentifier(string $usernameOrEmail): ?User
+    {
         return $this->createQueryBuilder("u")
             ->where('u.email = :identifier OR u.username = :identifier')
             ->andWhere('u.isVerified = 1')
@@ -43,6 +44,18 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function getNumberNonVerifiedUsers(): int
+    {
+        $result = $this->createQueryBuilder('u')
+            ->select('COUNT(u)')
+            ->where('u.isVerified = 0')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        return $result ?? 0;
     }
 
     //    /**

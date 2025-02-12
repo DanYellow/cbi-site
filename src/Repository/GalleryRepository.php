@@ -16,6 +16,17 @@ class GalleryRepository extends ServiceEntityRepository
         parent::__construct($registry, Gallery::class);
     }
 
+    public function getNumberGalleries(): int
+    {
+        $result = $this->createQueryBuilder('gallery')
+            ->select('COUNT(gallery)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        return $result ?? 0;
+    }
+
 //    /**
 //     * @return Gallery[] Returns an array of Gallery objects
 //     */
