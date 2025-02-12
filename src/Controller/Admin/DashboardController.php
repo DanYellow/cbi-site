@@ -57,7 +57,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Membres', 'fa-solid fa-user', User::class)
             ->setPermission('ROLE_ADMIN');
         yield MenuItem::linkToCrud('Mon profil', 'fa-solid fa-user', User::class)
-            ->setAction('edit')
+            ->setAction('detail')
             ->setEntityId($this->getUser()->getId())
         ;
         yield MenuItem::section();
