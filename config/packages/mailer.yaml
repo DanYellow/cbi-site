@@ -2,6 +2,6 @@ framework:
   mailer:
     dsn: '%env(MAILER_DSN)%'
     envelope:
-      sender: 'no-reply@example.com'
+      sender: '%app.auto_email%'
     headers:
-      From: 'Club des Belles Images <no-reply@example.com>'
+      From: 'Club des Belles Images <%app.auto_email%>'
