@@ -1,37 +1,11 @@
-{# {% extends 'emails/base.html.twig' %}
-
-{% block body %}
-    <h1>Bonjour
-        {{ user.firstname }}
-        {{ user.lastname }}</h1>
-
-    <p>Votre compte a été activé sur le site du club des Belles Images.</p>
-    <p>Dès maintenant, vous pouvez vous connecter avec l'adresse-mail que vous avez définie ({{ user.email}}) ou votre nom d'utilisateur ({{ user.username }}) et le mot de passe que vous avez défini lors de la création de votre compte.</p>
-    <p>
-        <a href="{{ path("app_login") }}" target="_blank" rel="noopener noreferrer">Se connecter</a>
-    </p>
-
-    <img src="{{ email.image("@images/logo-cbi.jpg") }}" width="200" alt="Logo cbi">
-{% endblock %} #}
+{% set content %}
+{% include 'emails/style.html.twig' %}
+{% endset %}
 
 
 {% apply inky_to_html|inline_css(source('@styles/foundation-emails.css'))|inline_css %}
-<style>
-	body {
-		font-family: "Comic Sans MS";
-		font-weight: normal;
-	}
-
-	.font-bold {
-		font-weight: bold;
-	}
-
-	.logo {
-		width: 150px;
-	}
-</style>
-
-<container>
+{{ content }}
+<container class="body">
 	<row class="header">
 		<columns>
 			<spacer size="16"></spacer>
@@ -43,15 +17,15 @@
 		</columns>
 	</row>
 	<row>
-		<columns>
-			<p>Votre compte a été activé sur le site du club des Belles Images.</p>
+		<columns small="6" large="4">
+			<p>Votre compte a été activé sur le site web du Club des Belles Images.</p>
 			<p>Dès maintenant, vous pouvez vous connecter avec l'adresse-mail que vous avez définie (<span class="font-bold">{{ user.email}}</span>) ou votre nom d'utilisateur (<span class="font-bold">{{ user.username }}</span>) et le mot de passe que vous avez défini lors de la création de votre compte.</p>
 		</columns>
 	</row>
 	<row>
 		<columns>
 			<center>
-				<button href="{{ url("app_login") }}">Se connecter</button>
+				<button class="expanded rounded center" href="{{ url("app_login") }}">Se connecter</button>
 			</center>
 		</columns>
 	</row>
@@ -59,6 +33,15 @@
 		<columns>
 			<center>
 				<img src="{{ email.image("@images/logo-cbi.jpg") }}" class="logo" width="200" alt="Logo cbi">
+			</center>
+		</columns>
+	</row>
+	<row>
+		<columns>
+			<center>
+				<p>
+					<small class="small">Réunions tous les lundis (sauf jours fériés et vacances scolaires) à 21h</small>
+				</p>
 			</center>
 		</columns>
 	</row>
