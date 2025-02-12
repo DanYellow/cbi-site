@@ -46,26 +46,5 @@ class UserCrudController extends AbstractCrudController
             ->setPageTitle('new', 'Créer nouveau membre')
             ->setDefaultSort(['lastname' => 'ASC'])
         ;
-        // ->setEntityPermission('ROLE_EDITOR');
     }
-
-    // public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void {
-    //     $this->sendEmail();
-    // }
-
-    // private function sendEmail(MailerInterface $mailer)
-    // {
-    //     $email = (new Email())
-    //         ->from('hello@example.com')
-    //         ->to('you@example.com')
-    //         //->cc('cc@example.com')
-    //         //->bcc('bcc@example.com')
-    //         //->replyTo('fabien@example.com')
-    //         //->priority(Email::PRIORITY_HIGH)
-    //         ->subject('Time for Symfony Mailer!')
-    //         ->text('Sending emails is fun again!')
-    //         ->html('<p>See Twig integration for better HTML integration!</p>');
-
-    //     $mailer->send($email);
-    // }
 }

@@ -14,35 +14,52 @@
     <img src="{{ email.image("@images/logo-cbi.jpg") }}" width="200" alt="Logo cbi">
 {% endblock %} #}
 
-{% apply inline_css %}
+
+{% apply inky_to_html|inline_css(source('@styles/foundation-emails.css'))|inline_css %}
 <style>
 	body {
-		font-family: Helvetica, Arial, sans-serif;
+		font-family: "Comic Sans MS";
+		font-weight: normal;
+	}
+
+	.font-bold {
+		font-weight: bold;
+	}
+
+	.logo {
+		width: 150px;
 	}
 </style>
-{% endapply %}
 
-{% apply inky_to_html %}
 <container>
 	<row class="header">
 		<columns>
 			<spacer size="16"></spacer>
-			<h1 class="text-center">Bonjour
+			<h1 class="font-bold">
+				Bonjour
 				{{ user.firstname }}
-				{{ user.lastname }}</h1>
+				{{ user.lastname }},
+			</h1>
+		</columns>
+	</row>
+	<row>
+		<columns>
+			<p>Votre compte a été activé sur le site du club des Belles Images.</p>
+			<p>Dès maintenant, vous pouvez vous connecter avec l'adresse-mail que vous avez définie (<span class="font-bold">{{ user.email}}</span>) ou votre nom d'utilisateur (<span class="font-bold">{{ user.username }}</span>) et le mot de passe que vous avez défini lors de la création de votre compte.</p>
 		</columns>
 	</row>
 	<row>
 		<columns>
 			<center>
-				<img src="{{ email.image("@images/logo-cbi.jpg") }}" width="200" alt="Logo cbi">
+				<button href="{{ url("app_login") }}">Se connecter</button>
 			</center>
 		</columns>
 	</row>
-
 	<row>
 		<columns>
-			<button href="{{ path("app_login") }}">Se connecter</button>
+			<center>
+				<img src="{{ email.image("@images/logo-cbi.jpg") }}" class="logo" width="200" alt="Logo cbi">
+			</center>
 		</columns>
 	</row>
 </container>
