@@ -3,12 +3,18 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Gallery;
+use App\Repository\GalleryRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -45,8 +51,7 @@ class GalleryCrudController extends AbstractCrudController
             IdField::new('id')->hideOnForm()->hideOnIndex(),
             TextField::new('name', 'Nom'),
             DateField::new('date', 'Date')->setFormTypeOptions([
-                "attr" => [
-                ]
+                "attr" => []
             ]),
             BooleanField::new('isActive', "Activer la galerie"),
             BooleanField::new('isPrivate', "Rendre privée la galerie")
@@ -78,7 +83,7 @@ class GalleryCrudController extends AbstractCrudController
         return $crud
             ->setPageTitle('index', 'Liste des galeries')
             ->setEntityLabelInSingular('galerie')
-            ->setPageTitle('edit', fn (Gallery $gallery) => sprintf('Modifier galerie <b>"%s"</b>', $gallery->getName()))
+            ->setPageTitle('edit', fn(Gallery $gallery) => sprintf('Modifier galerie <b>"%s"</b>', $gallery->getName()))
             ->setPageTitle('new', 'Créer nouvelle galerie')
             ->showEntityActionsInlined()
             ->setSearchFields(null)
@@ -106,15 +111,19 @@ class GalleryCrudController extends AbstractCrudController
         parent::persistEntity($em, $entityInstance);
     }
 
-    // public function updateEntity(EntityManagerInterface $em, $entityInstance): void
-    // {
-    //     if (!$entityInstance instanceof Gallery) return;
+    public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
+    {
+        $qb = parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters);
+        $qb->where('entity.user = :user_id');
 
+        // if (in_array('ROLE_MANAGER', $this->getUser()->getRoles())) {
+        //     $qb->andWhere('entity.manager = :user');
+        // } else {
+        //     $qb->andWhere('entity.courier = :user');
+        // }
 
-    //     dd($entityInstance->getDate());
+        $qb->setParameter('user_id', $this->getUser());
 
-    //     parent::persistEntity($em, $entityInstance);
-    // }
-
-
+        return $qb;
+    }
 }

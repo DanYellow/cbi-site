@@ -40,12 +40,13 @@ class UserCrudController extends AbstractCrudController
                 ->setFormType(PasswordType::class)
                 ->onlyOnForms()
                 ->setRequired($pageName === Crud::PAGE_NEW)
+                ->setHelp($pageName === Crud::PAGE_NEW ? "" : "Laisser vide si le mot de passe n'est pas modifié")
                 ->setColumns(6),
             TextField::new('fullName', 'Nom complet')->hideOnForm(),
             TextField::new('email', 'Adresse e-mail')->setSortable(false)->setColumns(6),
             ArrayField::new('roles', 'Rôles')->setSortable(false)->setColumns(6),
             BooleanField::new('isActive', 'Est actif / active'),
-            BooleanField::new('isVerified', 'Est vérifié(e)'),
+            BooleanField::new('isVerified', 'Est vérifié(e)')->hideWhenCreating(true),
         ];
     }
 
