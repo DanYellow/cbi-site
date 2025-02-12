@@ -47,7 +47,8 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Administration <br>Club des belles images');
+            ->setFaviconPath('assets/images/logo-cbi.jpg')
+            ->setTitle('<img src="/assets/images/logo-cbi.jpg"><br>Administration <br>Club des belles images');
     }
 
     public function configureMenuItems(): iterable
@@ -55,6 +56,10 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Mes galeries photos', 'fa-solid fa-images', Gallery::class);
         yield MenuItem::linkToCrud('Membres', 'fa-solid fa-user', User::class)
             ->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud('Mon profil', 'fa-solid fa-user', User::class)
+            ->setAction('edit')
+            ->setEntityId($this->getUser()->getId())
+        ;
         yield MenuItem::section();
         yield MenuItem::linkToLogout('Déconnexion', 'fa fa-sign-out');
     }

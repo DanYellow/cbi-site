@@ -96,16 +96,12 @@ class GalleryCrudController extends AbstractCrudController
     {
         return $assets
             ->addAssetMapperEntry(Asset::new('backend_app'))
-            // ->addJsFile('backend/admin.js')
         ;
     }
 
     public function persistEntity(EntityManagerInterface $em, $entityInstance): void
     {
         if (!$entityInstance instanceof Gallery) return;
-
-        // $slugger = new AsciiSlugger();
-
         $entityInstance->setUser($this->getUser());
 
         parent::persistEntity($em, $entityInstance);
@@ -115,13 +111,6 @@ class GalleryCrudController extends AbstractCrudController
     {
         $qb = parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters);
         $qb->where('entity.user = :user_id');
-
-        // if (in_array('ROLE_MANAGER', $this->getUser()->getRoles())) {
-        //     $qb->andWhere('entity.manager = :user');
-        // } else {
-        //     $qb->andWhere('entity.courier = :user');
-        // }
-
         $qb->setParameter('user_id', $this->getUser());
 
         return $qb;
