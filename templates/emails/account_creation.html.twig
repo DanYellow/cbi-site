@@ -1,0 +1,50 @@
+{% set content %}
+{% include 'emails/style.html.twig' %}
+{% endset %}
+
+
+{% apply inky_to_html|inline_css(source('@styles/foundation-emails.css'))|inline_css %}
+{{ content }}
+<container class="body">
+	<row class="header">
+		<columns>
+			<spacer size="16"></spacer>
+			<h1 class="font-bold">
+				Bonjour,
+			</h1>
+		</columns>
+	</row>
+	<row>
+		<columns small="6" large="4">
+			<p>{{ user.getFullName }} vient de s'inscrire sur le site du Club des Belles Images avec les informations suivantes :</p>
+            <ul>
+                <li>{{ user.getFullName }}</li>
+                <li>{{ user.email }}</li>
+            </ul>
+		</columns>
+	</row>
+	<row>
+		<columns>
+			<center>
+				<button class="expanded rounded center" href="{{ url("app_login") }}">Se connecter</button>
+			</center>
+		</columns>
+	</row>
+	<row>
+		<columns>
+			<center>
+				<img src="{{ email.image("@images/logo-cbi.jpg") }}" class="logo" width="200" alt="Logo cbi">
+			</center>
+		</columns>
+	</row>
+	<row>
+		<columns>
+			<center>
+				<p>
+					<small class="small">Réunions tous les lundis (sauf jours fériés et vacances scolaires) à 21h</small>
+				</p>
+			</center>
+		</columns>
+	</row>
+</container>
+{% endapply %}
