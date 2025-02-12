@@ -46,6 +46,9 @@ class UserCrudController extends AbstractCrudController
                 ->setFormType(PasswordType::class)
                 ->onlyOnForms()
                 ->setRequired($pageName === Crud::PAGE_NEW)
+                ->setHtmlAttributes([
+                    'autocomplete' => 'false',
+                ])
                 ->setHelp($pageName === Crud::PAGE_NEW ? "" : "Laisser vide si le mot de passe n'est pas modifié")
                 ->setColumns(6),
             TextField::new('fullName', 'Nom complet')->hideOnForm(),
@@ -60,7 +63,7 @@ class UserCrudController extends AbstractCrudController
     {
         if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
             return $actions
-                ->disable(Action::NEW, Action::DELETE, Crud::PAGE_INDEX);
+                ->disable(Action::NEW, Action::DELETE, Crud::PAGE_INDEX, Action::BATCH_DELETE);
                 // ->add(Crud::PAGE_INDEX, Action::DETAIL);
         }
 
@@ -96,18 +99,6 @@ class UserCrudController extends AbstractCrudController
             ->setDefaultSort(['lastname' => 'ASC'])
             ->setPageTitle('edit', fn(User $user) => $this->pageTitle($user))
         ;
-    }
-
-    public function updateEntity(EntityManagerInterface $em, $entityInstance): void
-    {
-        if (!$entityInstance instanceof User) return;
-
-        $originalData = $em->getUnitOfWork()->getEntityChangeSet($entityInstance);
-        if (array_key_exists('password', $originalData)) {
-            $entityInstance->setPassword($this->userPasswordHasher->hashPassword($entityInstance, $entityInstance->getPassword()));
-        }
-
-        parent::updateEntity($em, $entityInstance);
     }
 
     public function persistEntity(EntityManagerInterface $em, $entityInstance): void
