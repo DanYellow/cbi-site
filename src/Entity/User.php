@@ -249,6 +249,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $firstnameFirstLetter = substr($this->firstname, 0, 1);
         $lastnameNFirstLetters = substr($this->lastname, 0, 7);
         $this->username = "{$firstnameFirstLetter}{$lastnameNFirstLetters}";
+        $this->username = strtolower($this->username);
     }
 
     public function getFullName()
