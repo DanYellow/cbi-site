@@ -40,7 +40,7 @@ class DashboardController extends AbstractDashboardController
     {
         return Dashboard::new()
             ->setFaviconPath('assets/images/logo-cbi.jpg')
-            ->setTitle('<img src="/assets/images/logo-cbi.jpg"><br>Administration <br>Club des belles images');
+            ->setTitle('<img src="/assets/images/logo-cbi.jpg" alt="Logo Club de Belles Images" width="200">Administration <br>Club des belles images');
     }
 
     public function configureMenuItems(): iterable
