@@ -50,9 +50,10 @@ class GalleryCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm()->hideOnIndex(),
             TextField::new('name', 'Nom'),
-            DateField::new('date', 'Date')->setFormTypeOptions([
+            DateField::new('createdAt', 'Crée le')->setFormTypeOptions([
                 "attr" => []
             ]),
+            DateField::new('updatedAt', 'Mis à jour le'),
             BooleanField::new('isActive', "Activer la galerie"),
             BooleanField::new('isPrivate', "Rendre privée la galerie")
                 ->setColumns(3)
@@ -61,7 +62,7 @@ class GalleryCrudController extends AbstractCrudController
                         "data-is-private-switch" => null,
                     ],
                 ])->onlyOnForms(),
-            BooleanField::new('isPrivate', "Rendre privée la galerie")
+            BooleanField::new('isPrivate', "Accessible via mot de passe")
                 ->renderAsSwitch(false)
                 ->onlyOnIndex(),
             TextField::new('password', 'Mot de passe d\'accès')
@@ -88,7 +89,7 @@ class GalleryCrudController extends AbstractCrudController
             ->setPageTitle('new', 'Créer nouvelle galerie')
             ->showEntityActionsInlined()
             ->setSearchFields(null)
-            ->setDefaultSort(['date' => 'DESC'])
+            ->setDefaultSort(['updatedAt' => 'DESC'])
             // ->addFormTheme('back/collection-row-participant-contest.html.twig')
         ;
     }
