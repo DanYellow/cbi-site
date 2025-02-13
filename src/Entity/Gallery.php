@@ -45,12 +45,16 @@ class Gallery
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $password = null;
 
+    #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
     public function __construct()
     {
         $this->uuid = uniqid();
 
         $date = new \DateTimeImmutable();
         $this->date = $date;
+        $this->updatedAt = $date;
     }
 
     public function getId(): ?int
@@ -159,9 +163,21 @@ class Gallery
         return $this->getName();
     }
 
-    // #[ORM\PrePersist]
-    // public function setCreatedAtValue(): void
-    // {
-    //     $this->createdAt = new \DateTimeImmutable();
-    // }
+    #[ORM\PreUpdate]
+    public function setCreatedAtValue(): void
+    {
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
 }

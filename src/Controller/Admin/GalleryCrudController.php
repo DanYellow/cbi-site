@@ -74,7 +74,8 @@ class GalleryCrudController extends AbstractCrudController
                 ->setRequired($isPrivate)
                 ->hideOnIndex(),
             TextField::new('uuid')->hideOnForm()->hideOnIndex(),
-            TextEditorField::new('slug')->hideOnForm()->hideOnIndex(),
+            TextField::new('user.fullname', 'Auteur(e)')->onlyOnIndex()->setPermission("ROLE_ADMIN"),
+            TextField::new('slug')->hideOnForm()->hideOnIndex(),
         ];
     }
 
@@ -95,8 +96,7 @@ class GalleryCrudController extends AbstractCrudController
     public function configureAssets(Assets $assets): Assets
     {
         return $assets
-            ->addAssetMapperEntry(Asset::new('backend_app'))
-        ;
+            ->addAssetMapperEntry(Asset::new('backend_app'));
     }
 
     public function persistEntity(EntityManagerInterface $em, $entityInstance): void
@@ -110,8 +110,10 @@ class GalleryCrudController extends AbstractCrudController
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {
         $qb = parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters);
-        $qb->where('entity.user = :user_id');
-        $qb->setParameter('user_id', $this->getUser());
+        if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+            $qb->where('entity.user = :user_id');
+            $qb->setParameter('user_id', $this->getUser());
+        }
 
         return $qb;
     }
