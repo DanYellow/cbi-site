@@ -68,10 +68,10 @@ class UserCrudController extends AbstractCrudController
             yield BooleanField::new('isVerified', 'Est vérifié(e)')->hideOnForm();
         }
 
-        yield CollectionField::new('listGalleries', "Nombre de galeries")
+        yield CollectionField::new('listAlbums', "Nombre d'albums")
             ->hideOnForm()
             ->formatValue(function ($value, $entity) {
-                $nbTotal = count($entity->getListGalleries()->toArray());
+                $nbTotal = count($entity->getListAlbums()->toArray() ?? 0);
                 return $nbTotal;
             });
     }

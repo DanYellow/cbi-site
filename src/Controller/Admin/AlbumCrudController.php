@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Gallery;
+use App\Entity\Album;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -21,19 +21,19 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class GalleryCrudController extends AbstractCrudController
+class AlbumCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Gallery::class;
+        return Album::class;
     }
 
     public function configureFields(string $pageName): iterable
     {
-        $gallery = $this->getContext()->getEntity()->getInstance();
+        $album = $this->getContext()->getEntity()->getInstance();
         $isPrivate = false;
-        if ($gallery) {
-            $isPrivate = $gallery->isPrivate();
+        if ($album) {
+            $isPrivate = $album->isPrivate();
         }
 
         $passwordInputAttributes = array(
@@ -80,10 +80,10 @@ class GalleryCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPageTitle('index', 'Liste des galeries')
+            ->setPageTitle('index', 'Mes albums')
             ->setEntityLabelInSingular('galerie')
-            ->setPageTitle('edit', fn(Gallery $gallery) => sprintf('Modifier galerie <b>"%s"</b>', $gallery->getName()))
-            ->setPageTitle('new', 'Créer nouvelle galerie')
+            ->setPageTitle('edit', fn(Album $album) => sprintf('Modifier album <b>"%s"</b>', $album->getName()))
+            ->setPageTitle('new', 'Créer nouvel album')
             ->showEntityActionsInlined()
             ->setSearchFields(null)
             ->setDefaultSort(['updatedAt' => 'DESC'])
@@ -100,7 +100,7 @@ class GalleryCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         $actions->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) {
-            return $action->setLabel("Créer nouvelle galerie");
+            return $action->setLabel("Créer nouvel album");
         });
 
         return parent::configureActions($actions);
@@ -108,7 +108,7 @@ class GalleryCrudController extends AbstractCrudController
 
     public function persistEntity(EntityManagerInterface $em, $entityInstance): void
     {
-        if (!$entityInstance instanceof Gallery) return;
+        if (!$entityInstance instanceof Album) return;
         $entityInstance->setUser($this->getUser());
 
         parent::persistEntity($em, $entityInstance);

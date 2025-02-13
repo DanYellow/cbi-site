@@ -2,24 +2,24 @@
 
 namespace App\Repository;
 
-use App\Entity\Gallery;
+use App\Entity\Album;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Gallery>
+ * @extends ServiceEntityRepository<Album>
  */
-class GalleryRepository extends ServiceEntityRepository
+class AlbumRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Gallery::class);
+        parent::__construct($registry, Album::class);
     }
 
     public function getNumberGalleries(): int
     {
-        $result = $this->createQueryBuilder('gallery')
-            ->select('COUNT(gallery)')
+        $result = $this->createQueryBuilder('album')
+            ->select('COUNT(album)')
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -28,7 +28,7 @@ class GalleryRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Gallery[] Returns an array of Gallery objects
+//     * @return Album[] Returns an array of Album objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -42,7 +42,7 @@ class GalleryRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Gallery
+//    public function findOneBySomeField($value): ?Album
 //    {
 //        return $this->createQueryBuilder('g')
 //            ->andWhere('g.exampleField = :val')

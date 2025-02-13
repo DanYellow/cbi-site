@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\GalleryRepository;
+use App\Repository\AlbumRepository;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,9 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Slug;
 
 
-#[ORM\Entity(repositoryClass: GalleryRepository::class)]
+#[ORM\Entity(repositoryClass: AlbumRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class Gallery
+class Album
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

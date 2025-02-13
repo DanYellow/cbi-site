@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Gallery;
+use App\Entity\Album;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
@@ -24,7 +24,7 @@ class DashboardController extends AbstractDashboardController
     public function index(): Response
     {
         $routeBuilder = $this->container->get(AdminUrlGenerator::class);
-        $url = $routeBuilder->setController(GalleryCrudController::class)->generateUrl();
+        $url = $routeBuilder->setController(AlbumCrudController::class)->generateUrl();
 
         return $this->redirect($url);
     }
@@ -45,7 +45,7 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToCrud('Mes galeries photos', 'fa-solid fa-images', Gallery::class);
+        yield MenuItem::linkToCrud('Mes albums', 'fa-solid fa-images', Album::class);
         yield MenuItem::linkToCrud('Mon profil', 'fa-solid fa-user', User::class)
             ->setAction('detail')
             ->setEntityId($this->getUser()->getId());

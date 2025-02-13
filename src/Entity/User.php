@@ -53,17 +53,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?bool $isVerified = false;
 
     /**
-     * @var Collection<int, Gallery>
+     * @var Collection<int, Album>
      */
-    #[ORM\OneToMany(targetEntity: Gallery::class, mappedBy: 'user')]
-    private Collection $listGalleries;
+    #[ORM\OneToMany(targetEntity: Album::class, mappedBy: 'user')]
+    private Collection $listAlbums;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
     public function __construct()
     {
-        $this->listGalleries = new ArrayCollection();
+        $this->listAlbums = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -182,13 +182,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->username;
     }
 
-    // public function setUsername(string $username): static
-    // {
-    //     $this->username = $username;
-
-    //     return $this;
-    // }
-
     public function isVerified(): ?bool
     {
         return $this->isVerified;
@@ -202,29 +195,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Gallery>
+     * @return Collection<int, Album>
      */
-    public function getListGalleries(): Collection
+    public function getListAlbums(): Collection
     {
-        return $this->listGalleries;
+        return $this->listAlbums;
     }
 
-    public function addListGallery(Gallery $listGallery): static
+    public function addListGallery(Album $listAlbum): static
     {
-        if (!$this->listGalleries->contains($listGallery)) {
-            $this->listGalleries->add($listGallery);
-            $listGallery->setUser($this);
+        if (!$this->listAlbums->contains($listAlbum)) {
+            $this->listAlbums->add($listAlbum);
+            $listAlbum->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeListGallery(Gallery $listGallery): static
+    public function removeListGallery(Album $listAlbum): static
     {
-        if ($this->listGalleries->removeElement($listGallery)) {
+        if ($this->listAlbums->removeElement($listAlbum)) {
             // set the owning side to null (unless already changed)
-            if ($listGallery->getUser() === $this) {
-                $listGallery->setUser(null);
+            if ($listAlbum->getUser() === $this) {
+                $listAlbum->setUser(null);
             }
         }
 
