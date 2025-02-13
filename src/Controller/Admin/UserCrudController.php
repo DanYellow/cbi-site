@@ -78,6 +78,10 @@ class UserCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
+        $actions->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) {
+            return $action->setLabel("Créer nouveau membre");
+        });
+
         if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
             return $actions
                 ->disable(

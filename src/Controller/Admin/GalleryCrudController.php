@@ -3,11 +3,12 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Gallery;
-use App\Repository\GalleryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -18,10 +19,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class GalleryCrudController extends AbstractCrudController
 {
@@ -71,7 +69,6 @@ class GalleryCrudController extends AbstractCrudController
                     'help' => "Seuls les internautes ayant le mot de passe pourront accéder à la galerie",
                 ])
                 ->setColumns(3)
-                // ->setFormType(PasswordType::class)
                 ->setRequired($isPrivate)
                 ->hideOnIndex(),
             TextField::new('uuid')->hideOnForm()->hideOnIndex(),
@@ -98,6 +95,15 @@ class GalleryCrudController extends AbstractCrudController
     {
         return $assets
             ->addAssetMapperEntry(Asset::new('backend_app'));
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        $actions->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) {
+            return $action->setLabel("Créer nouvelle galerie");
+        });
+
+        return parent::configureActions($actions);
     }
 
     public function persistEntity(EntityManagerInterface $em, $entityInstance): void
