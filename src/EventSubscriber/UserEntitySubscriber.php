@@ -62,9 +62,12 @@ class UserEntitySubscriber
         $entityManager = $args->getObjectManager();
         $originalData = $entityManager->getUnitOfWork()->getEntityChangeSet($user);
 
+        // $fs = new Filesystem();
+        // $fs->appendToFile('logs.tmp.txt', json_encode($originalData));
+
         if (!empty($user->getPassword()) && array_key_exists('password', $originalData)) {
             $user->setPassword($this->userPasswordHasher->hashPassword($user, $user->getPassword()));
-        } else {
+        } else if (array_key_exists('password', $originalData)) {
             $user->setPassword($originalData["password"][0]);
         }
     }
