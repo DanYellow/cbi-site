@@ -28,13 +28,9 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserCrudController extends AbstractCrudController
 {
-    protected UserPasswordHasherInterface $userPasswordHasher;
-
     public function __construct(
-        UserPasswordHasherInterface $userPasswordHasher,
-    ) {
-        $this->userPasswordHasher = $userPasswordHasher;
-    }
+        private UserPasswordHasherInterface $userPasswordHasher,
+    ) {}
 
     public static function getEntityFqcn(): string
     {
@@ -60,10 +56,16 @@ class UserCrudController extends AbstractCrudController
 
         if (in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
             yield ArrayField::new('roles', 'Rôles')->setSortable(false)->setColumns(6);
-            yield BooleanField::new('isActive', 'Est actif / active');
-            yield BooleanField::new('isVerified', 'Est vérifié(e)')->hideWhenCreating(true);
+            yield BooleanField::new('isActive', 'Est actif / active')
+                ->setDisabled(
+                    in_array('ROLE_ADMIN', $this->getContext()->getEntity()?->getInstance()?->getRoles() ?? [])
+                );;
+            yield BooleanField::new('isVerified', 'Est vérifié(e)')
+                ->setDisabled(
+                    in_array('ROLE_ADMIN', $this->getContext()->getEntity()?->getInstance()?->getRoles() ?? [])
+                )
+                ->hideWhenCreating(true);
         } else {
-            // yield ArrayField::new('roles', 'Rôles')->setSortable(false)->setColumns(6)->hideOnForm();
             yield BooleanField::new('isActive', 'Est actif / active')->hideOnForm();
             yield BooleanField::new('isVerified', 'Est vérifié(e)')->hideOnForm();
         }
@@ -150,6 +152,14 @@ class UserCrudController extends AbstractCrudController
 
         parent::persistEntity($em, $entityInstance);
     }
+
+    // public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    // {
+    //     if ($entityInstance->isActive()) {
+    //         throw new \Exception('Deleting approved questions is forbidden!');
+    //     }
+    //     parent::updateEntity($entityManager, $entityInstance);
+    // }
 
     protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
     {

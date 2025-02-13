@@ -26,7 +26,7 @@
 | isVerified      |
 | biography      |
 
-| **Gallery**  |
+| **Album**  |
 |-----------|
 | name |
 | user_id  |

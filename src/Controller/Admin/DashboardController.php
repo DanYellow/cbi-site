@@ -49,7 +49,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Mon profil', 'fa-solid fa-user', User::class)
             ->setAction('detail')
             ->setEntityId($this->getUser()->getId());
-        yield MenuItem::section("Administration");
+        yield MenuItem::section("Administration")->setPermission('ROLE_ADMIN');
         yield MenuItem::linkToCrud('Membres', 'fa-solid fa-users', User::class)
             ->setPermission('ROLE_ADMIN')->setBadge($this->userRepository->getNumberNonVerifiedUsers(), 'warning');
         yield MenuItem::section();
