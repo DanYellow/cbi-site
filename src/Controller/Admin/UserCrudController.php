@@ -17,6 +17,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
@@ -55,7 +56,7 @@ class UserCrudController extends AbstractCrudController
             ->setHelp($pageName === Crud::PAGE_NEW ? "" : "Laisser vide si le mot de passe n'est pas modifié")
             ->setColumns(6);
         yield TextField::new('fullName', 'Nom complet')->hideOnForm();
-        yield TextField::new('email', 'Adresse e-mail')->setSortable(false)->setColumns(6);
+        yield EmailField::new('email', 'Adresse e-mail')->setSortable(false)->setColumns(6);
 
         if (in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
             yield ArrayField::new('roles', 'Rôles')->setSortable(false)->setColumns(6);
@@ -102,6 +103,8 @@ class UserCrudController extends AbstractCrudController
                     return $user->getId() !== $userId;
                 });
             });
+
+            $actions->add(Crud::PAGE_INDEX, Action::DETAIL);
         }
 
         return parent::configureActions($actions);
@@ -131,6 +134,7 @@ class UserCrudController extends AbstractCrudController
                 return sprintf('Profil de "%s"', $user->getFullName());
             })
             ->showEntityActionsInlined()
+            ->setDefaultSort(['lastname' => 'ASC'])
         ;
     }
 

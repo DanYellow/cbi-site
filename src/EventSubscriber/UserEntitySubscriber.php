@@ -12,6 +12,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -27,7 +28,7 @@ class UserEntitySubscriber
     public function __construct(
         MailerInterface $mailer,
         ParameterBagInterface $params,
-        UserPasswordHasherInterface $userPasswordHasher
+        UserPasswordHasherInterface $userPasswordHasher,
     ) {
         $this->mailer = $mailer;
         $this->params = $params;
@@ -38,6 +39,10 @@ class UserEntitySubscriber
     {
         $entityManager = $args->getObjectManager();
         $originalData = $entityManager->getUnitOfWork()->getEntityChangeSet($user);
+
+        // $this->session->getFlashBag()->add('success',
+        //     'Your changes were saved!'
+        // );
 
         if (array_key_exists('isVerified', $originalData) && $user->isVerified()) {
             try {
@@ -61,9 +66,6 @@ class UserEntitySubscriber
     {
         $entityManager = $args->getObjectManager();
         $originalData = $entityManager->getUnitOfWork()->getEntityChangeSet($user);
-
-        // $fs = new Filesystem();
-        // $fs->appendToFile('logs.tmp.txt', json_encode($originalData));
 
         if (!empty($user->getPassword()) && array_key_exists('password', $originalData)) {
             $user->setPassword($this->userPasswordHasher->hashPassword($user, $user->getPassword()));

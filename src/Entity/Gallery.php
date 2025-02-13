@@ -154,6 +154,11 @@ class Gallery
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
     // #[ORM\PrePersist]
     // public function setCreatedAtValue(): void
     // {
