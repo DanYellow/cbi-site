@@ -6,7 +6,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityDeletedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityUpdatedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Translation\TranslatableMessage;
 
@@ -25,6 +24,10 @@ final class EasyAdminListener implements EventSubscriberInterface
 
     public function flashMessageAfterPersist(AfterEntityPersistedEvent $event): void
     {
+        if ($this->requestStack->getCurrentRequest()->isXmlHttpRequest()) {
+            return;
+        }
+
         $this->requestStack->getSession()->getFlashBag()->add('success', new TranslatableMessage('content_admin.flash_message.create', [
             '%name%' => (string) $event->getEntityInstance(),
         ], 'admin'));
@@ -32,8 +35,9 @@ final class EasyAdminListener implements EventSubscriberInterface
 
     public function flashMessageAfterUpdate(AfterEntityUpdatedEvent $event): void
     {
-        $fs = new Filesystem();
-        $fs->appendToFile('logs.tmp.txt', "hello worrd");
+        if ($this->requestStack->getCurrentRequest()->isXmlHttpRequest()) {
+            return;
+        }
 
         $this->requestStack->getSession()->getFlashBag()->add('success', new TranslatableMessage('content_admin.flash_message.update', [
             '%name%' => (string) $event->getEntityInstance(),
@@ -42,6 +46,10 @@ final class EasyAdminListener implements EventSubscriberInterface
 
     public function flashMessageAfterDelete(AfterEntityDeletedEvent $event): void
     {
+        if ($this->requestStack->getCurrentRequest()->isXmlHttpRequest()) {
+            return;
+        }
+
         $this->requestStack->getSession()->getFlashBag()->add('success', new TranslatableMessage('content_admin.flash_message.delete', [
             '%name%' => (string) $event->getEntityInstance(),
         ], 'admin'));
