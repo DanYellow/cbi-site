@@ -20,6 +20,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -29,7 +30,7 @@ class UserCrudController extends AbstractCrudController
     protected UserPasswordHasherInterface $userPasswordHasher;
 
     public function __construct(
-        UserPasswordHasherInterface $userPasswordHasher
+        UserPasswordHasherInterface $userPasswordHasher,
     ) {
         $this->userPasswordHasher = $userPasswordHasher;
     }
@@ -81,10 +82,26 @@ class UserCrudController extends AbstractCrudController
                 ->disable(
                     Action::NEW,
                     Action::DELETE,
-                    Crud::PAGE_INDEX,
                     Action::BATCH_DELETE,
                     Action::SAVE_AND_RETURN,
+                    Crud::PAGE_INDEX,
                 );
+        } else {
+            $userId = $this->getUser()->getId();
+
+            $actions->update(Crud::PAGE_INDEX, Action::DELETE, static function (Action $action) use ($userId) {
+                return $action->displayIf(static function (User $user) use ($userId) {
+
+                    return $user->getId() !== $userId;
+                });
+            });
+
+            $actions->update(Crud::PAGE_DETAIL, Action::DELETE, static function (Action $action) use ($userId) {
+                return $action->displayIf(static function (User $user) use ($userId) {
+
+                    return $user->getId() !== $userId;
+                });
+            });
         }
 
         return parent::configureActions($actions);
@@ -113,6 +130,7 @@ class UserCrudController extends AbstractCrudController
 
                 return sprintf('Profil de "%s"', $user->getFullName());
             })
+            ->showEntityActionsInlined()
         ;
     }
 
