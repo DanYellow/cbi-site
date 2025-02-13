@@ -12,7 +12,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -21,28 +21,17 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 #[AsEntityListener(event: Events::preUpdate, method: 'preUpdate', entity: User::class)]
 class UserEntitySubscriber
 {
-    protected MailerInterface $mailer;
-    protected ParameterBagInterface $params;
-    protected UserPasswordHasherInterface $userPasswordHasher;
-
     public function __construct(
-        MailerInterface $mailer,
-        ParameterBagInterface $params,
-        UserPasswordHasherInterface $userPasswordHasher,
-    ) {
-        $this->mailer = $mailer;
-        $this->params = $params;
-        $this->userPasswordHasher = $userPasswordHasher;
-    }
+        private MailerInterface $mailer,
+        private ParameterBagInterface $params,
+        private UserPasswordHasherInterface $userPasswordHasher,
+        private RequestStack $requestStack,
+    ) {}
 
     public function postUpdate(User $user, PostUpdateEventArgs $args): void
     {
         $entityManager = $args->getObjectManager();
         $originalData = $entityManager->getUnitOfWork()->getEntityChangeSet($user);
-
-        // $this->session->getFlashBag()->add('success',
-        //     'Your changes were saved!'
-        // );
 
         if (array_key_exists('isVerified', $originalData) && $user->isVerified()) {
             try {
@@ -66,6 +55,13 @@ class UserEntitySubscriber
     {
         $entityManager = $args->getObjectManager();
         $originalData = $entityManager->getUnitOfWork()->getEntityChangeSet($user);
+
+        // if (
+        //     in_array('ROLE_ADMIN', $user->getRoles() ?? []) &&
+        //     (array_key_exists('isActive', $originalData) || array_key_exists('isVerified', $originalData))
+        // ) {
+        //     throw new \Exception('Deleting approved questions is forbidden!');
+        // }
 
         if (!empty($user->getPassword()) && array_key_exists('password', $originalData)) {
             $user->setPassword($this->userPasswordHasher->hashPassword($user, $user->getPassword()));

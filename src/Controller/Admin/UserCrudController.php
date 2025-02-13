@@ -55,15 +55,15 @@ class UserCrudController extends AbstractCrudController
         yield EmailField::new('email', 'Adresse e-mail')->setSortable(false)->setColumns(6);
 
         if (in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+            $isAdminUser = $pageName === Crud::PAGE_EDIT && in_array('ROLE_ADMIN', $this->getContext()->getEntity()?->getInstance()?->getRoles() ?? []);
             yield ArrayField::new('roles', 'Rôles')->setSortable(false)->setColumns(6);
             yield BooleanField::new('isActive', 'Est actif / active')
-                ->setDisabled(
-                    in_array('ROLE_ADMIN', $this->getContext()->getEntity()?->getInstance()?->getRoles() ?? [])
-                );;
+                ->setDisabled($isAdminUser)
+                ->setHelp($isAdminUser ? "Ne peut pas être édité pour un administrateur" : "")
+            ;
             yield BooleanField::new('isVerified', 'Est vérifié(e)')
-                ->setDisabled(
-                    in_array('ROLE_ADMIN', $this->getContext()->getEntity()?->getInstance()?->getRoles() ?? [])
-                )
+                ->setDisabled($isAdminUser)
+                ->setHelp($isAdminUser ? "Ne peut pas être édité pour un administrateur" : "")
                 ->hideWhenCreating(true);
         } else {
             yield BooleanField::new('isActive', 'Est actif / active')->hideOnForm();
@@ -98,14 +98,12 @@ class UserCrudController extends AbstractCrudController
 
             $actions->update(Crud::PAGE_INDEX, Action::DELETE, static function (Action $action) use ($userId) {
                 return $action->displayIf(static function (User $user) use ($userId) {
-
                     return $user->getId() !== $userId;
                 });
             });
 
             $actions->update(Crud::PAGE_DETAIL, Action::DELETE, static function (Action $action) use ($userId) {
                 return $action->displayIf(static function (User $user) use ($userId) {
-
                     return $user->getId() !== $userId;
                 });
             });
@@ -152,14 +150,6 @@ class UserCrudController extends AbstractCrudController
 
         parent::persistEntity($em, $entityInstance);
     }
-
-    // public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
-    // {
-    //     if ($entityInstance->isActive()) {
-    //         throw new \Exception('Deleting approved questions is forbidden!');
-    //     }
-    //     parent::updateEntity($entityManager, $entityInstance);
-    // }
 
     protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
     {
