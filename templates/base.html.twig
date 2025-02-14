@@ -1,22 +1,53 @@
 <!DOCTYPE html>
 <html class="bg-slate-50">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}{% endblock %} - Site web du club des belles images de Sarcelles</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>
+			{% block title %}{% endblock %}
+			- Site web du club des belles images de Sarcelles</title>
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('app') }}
+		{% endblock %}
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
+		{% block javascripts %}
+			{% block importmap %}
+				{{ importmap('app') }}
+			{% endblock %}
 
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body class="px-3">
-        {% block body %}{% endblock %}
-        {% include "includes/footer.html.twig" %}
-    </body>
+			{{ encore_entry_script_tags('app') }}
+		{% endblock %}
+	</head>
+	<body class="px-3 py-4">
+		<header class="flex gap-6.5 md:flex-row flex-col">
+			<a href="{{ path("app_index") }}" rel="noopener noreferrer" class="flex justify-center">
+				<img width="90" src="{{ asset("assets/images/logo-cbi.png")}}" alt="Logo club des belles images">
+			</a>
+            <nav>
+                <ul class="flex gap-3">
+                    <li>
+                        <a href="{{ path("app_index") }}">Accueil</a>
+                    </li>
+                    <li>
+                        <a href="">Membres</a>
+                    </li>
+                    <li>
+                        <a href="">Blog</a>
+                    </li>
+                    <li>
+                        <a href="">Compétitions FPF</a>
+                    </li>
+                    <li>
+                        <a href="">BIP - Le magazine du Club des Belles Images</a>
+                    </li>
+                    <li>
+                        <a href="">Contact</a>
+                    </li>
+                </ul>
+            </nav>
+		</header>
+		{% block body %}{% endblock %}
+		{% include "includes/footer.html.twig" %}
+	</body>
 </html>
