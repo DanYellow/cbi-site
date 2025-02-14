@@ -8,11 +8,11 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 use Gedmo\Mapping\Annotation\Slug;
-
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: AlbumRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class Album
+class Album implements PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

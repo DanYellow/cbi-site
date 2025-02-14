@@ -116,7 +116,7 @@ class AlbumCrudController extends AbstractCrudController
         $entityInstance->setUser($this->getUser());
 
         if (!empty($entityInstance->getPassword())) {
-            $entityInstance->setPassword($this->userPasswordHasher->hashPassword($this->getUser(), $entityInstance->getPassword()));
+            $entityInstance->setPassword($this->userPasswordHasher->hashPassword($entityInstance, $entityInstance->getPassword()));
         }
 
         parent::persistEntity($em, $entityInstance);
