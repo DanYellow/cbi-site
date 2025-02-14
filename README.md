@@ -46,6 +46,7 @@
 | name |
 | isActive   |
 | legend     |
+| order     |
 
 | **ExifData**  |
 |-----------|

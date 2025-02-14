@@ -1,12 +1,11 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @config '../../tailwind.config.js';
 
 body {
-    background-color: hsl(210, 40%, 96.1%);
+    /* background-color: hsl(210, 40%, 96.1%); */
     /* rgb(247, 247, 247); */
 }
-
 
 @utility registration-input {
     @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
@@ -14,4 +13,16 @@ body {
 
 @utility registration-label {
     @apply block mb-2 font-bold text-gray-900;
+}
+
+@custom-variant hocus {
+    &:is(:hover, :focus-visible) {
+        @slot;
+    }
+}
+
+@custom-variant group-hocus {
+    &:is(:where(.group):hover *, :where(.group):focus-visible *) {
+        @slot;
+    }
 }
