@@ -38,8 +38,10 @@ class AlbumCrudController extends AbstractCrudController
     {
         $album = $this->getContext()->getEntity()->getInstance();
         $isPrivate = false;
+        $hasPassword = false;
         if ($album) {
             $isPrivate = $album->isPrivate();
+            $hasPassword = !empty($album->getPassword());
         }
 
         $passwordInputAttributes = array(
@@ -49,6 +51,10 @@ class AlbumCrudController extends AbstractCrudController
 
         if (!$isPrivate) {
             $passwordInputAttributes['disabled'] = '';
+        }
+
+        if ($hasPassword && $isPrivate) {
+            $passwordInputAttributes['data-has-value'] = '';
         }
 
         return [
