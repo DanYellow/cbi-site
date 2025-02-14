@@ -1,0 +1,23 @@
+{% set menu = [
+    { label: "Accueil", path: "app_index" },
+    { label: "Membres", path: "app_index" },
+    { label: "Blog", path: "app_index" },
+    { label: "Compétitions FPF", path: "app_index" },
+    { label: "BIP - Le magazine du Club des Belles Images", path: "app_index" },
+    { label: "Contact", path: "app_index" },
+] %}
+
+<header class="flex gap-4 md:flex-row flex-col max-w-7xl mx-auto pl-5 mt-4">
+	<a href="{{ path("app_index") }}" rel="noopener noreferrer" class="flex justify-center">
+		<img width="90" src="{{ asset("assets/images/logo-cbi.png")}}" alt="Logo club des belles images">
+	</a>
+	<nav>
+		<ul class="horizontal-scroll-shadow scrollbar-no1ne flex md:justify-end gap-x-6 overflow-x-auto sm:mr-0 before:!-mt-0.5 before:!pt-0 after:!-mt-0.5 after:!pt-0">
+			{% for menu_item in menu %}
+				<li class="{{ loop.first ? 'supports-[animation-timeline]:-ml-9' : ''}} {{ loop.last ? 'mr-9 bg-red-500' : ''}}">
+					<a class="whitespace-nowrap" href="{{ path(menu_item.path) }}">{{ menu_item.label }}</a>
+				</li>
+			{% endfor %}
+		</ul>
+	</nav>
+</header>
