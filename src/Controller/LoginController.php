@@ -30,6 +30,7 @@ class LoginController extends AbstractController
             'page_title' => 'Connexion administration - CBI',
             'remember_me_enabled' => true,
             'sign_in_label' => 'Se connecter',
+            'remember_me_label' => 'Se souvenir de moi',
             'csrf_token_intention' => 'authenticate',
         ]);
     }

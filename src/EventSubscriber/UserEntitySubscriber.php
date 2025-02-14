@@ -56,13 +56,6 @@ class UserEntitySubscriber
         $entityManager = $args->getObjectManager();
         $originalData = $entityManager->getUnitOfWork()->getEntityChangeSet($user);
 
-        // if (
-        //     in_array('ROLE_ADMIN', $user->getRoles() ?? []) &&
-        //     (array_key_exists('isActive', $originalData) || array_key_exists('isVerified', $originalData))
-        // ) {
-        //     throw new \Exception('Deleting approved questions is forbidden!');
-        // }
-
         if (!empty($user->getPassword()) && array_key_exists('password', $originalData)) {
             $user->setPassword($this->userPasswordHasher->hashPassword($user, $user->getPassword()));
         } else if (array_key_exists('password', $originalData)) {

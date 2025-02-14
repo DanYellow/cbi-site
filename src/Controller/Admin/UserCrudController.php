@@ -47,7 +47,7 @@ class UserCrudController extends AbstractCrudController
             ->onlyOnForms()
             ->setRequired($pageName === Crud::PAGE_NEW)
             ->setHtmlAttributes([
-                'autocomplete' => 'false',
+                'autocomplete' => 'new-password',
             ])
             ->setHelp($pageName === Crud::PAGE_NEW ? "" : "Laisser vide si le mot de passe n'est pas modifié")
             ->setColumns(6);
