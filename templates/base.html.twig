@@ -20,6 +20,7 @@
 		{% endblock %}
 	</head>
 	<body class="">
+	{# <body class="mr-[max(env(safe-area-inset-right),_theme(space.4))] ml-[max(env(safe-area-inset-left),_theme(space.4))]"> #}
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
     <header class="bg-blue-950 px-3 py-2 text-white">
         <div class="max-w-7xl mx-auto">

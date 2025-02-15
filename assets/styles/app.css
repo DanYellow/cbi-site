@@ -61,6 +61,10 @@ html {
     }
 }
 
+.main-menu-active-item {
+    background-color: var(--color-amber-200);
+}
+
 /* @supports (animation-timeline: scroll()) {
     @media (width < theme("screens.md")) {
         .horizontal-scroll-shadow {
