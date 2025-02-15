@@ -21,16 +21,13 @@
 		{% endblock %}
 
 		<meta name="title" content="{{ block('title') }} - Site web du club des belles images de Sarcelles"/>
-		<meta
-		name="description" content="With Meta Tags you can edit and experiment with your content then preview how your webpage will look on Google, Facebook, Twitter and more!"/>
+		<meta name="description" content="{% block description %}Club photo de la ville de Sarcelles. Réunions tous les lundis (sauf jours fériés et vacances scolaires) à partir de 20h30 au 3, rue Parmentier 95200 SARCELLES{% endblock %} "/>
 
-
-
-	{# <meta property="og:type" content="website"/>
-			<meta property="og:url" content="https://metatags.io/"/>
-			<meta property="og:title" content="Meta Tags — Preview, Edit and Generate"/>
-			<meta property="og:description" content="With Meta Tags you can edit and experiment with your content then preview how your webpage will look on Google, Facebook, Twitter and more!"/>
-			<meta property="og:image" content="https://metatags.io/images/meta-tags.png"/> #}
+	    <meta property="og:type" content="website"/>
+        <meta property="og:url" content="{{ app.request.get('_route') }}"/>
+        <meta property="og:title" content="{{ block('title') }} - Site web du club des belles images de Sarcelles"/>
+        <meta property="og:description" content="{{ block('description') }}"/>
+        <meta property="og:image" content="https://metatags.io/images/meta-tags.png"/>
 	</head>
 	<body class="h-full">
 		{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
@@ -42,8 +39,7 @@
 						<span class="font-bold inline sm:hidden">{{ app.user.username }}</span>
 					</p>
 
-						{# <a class="underline hover:no-underline" href="{{ path("admin")}}" rel="noopener noreferrer">Accéder à l'administration</a> #}
-                    <button type="button" class="size-6 text-white content-center" data-open-logged-dialog>
+                    <button type="button" class="size-6 text-white content-center block rounded-md hocus:bg-sky-900" data-open-logged-dialog>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-full w-full">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 13.5V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 9.75V10.5" />
                         </svg>

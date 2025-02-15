@@ -63,7 +63,29 @@ html {
 }
 
 .main-menu-active-item {
-    background-color: var(--color-amber-200);
+    background-color: var(--color-amber-300);
+}
+
+.main-menu-item {
+    z-index: 1;
+
+    &::after {
+        content: "";
+        background-color:var(--color-amber-200);
+        position: absolute;
+        inset: 0;
+        transform: scaleY(0);
+        transition: transform 150ms;
+        transform-origin: center bottom;
+        z-index: -1;
+        border-radius: var(--radius-md);
+    }
+
+    &:hover, &:focus-visible {
+        &::after {
+            transform: scaleY(1);
+        }
+    }
 }
 
 dialog {
