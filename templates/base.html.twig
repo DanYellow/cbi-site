@@ -3,9 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-		<title>
-			{% block title %}{% endblock %}
-			- Site web du club des belles images de Sarcelles</title>
+		<title>{% block title %}{% endblock %} - Site web du club des belles images de Sarcelles</title>
 		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
 		{% block stylesheets %}
 			{{ encore_entry_link_tags('app') }}
@@ -14,27 +12,72 @@
 		{% block javascripts %}
 			{% block importmap %}
 				{{ importmap('app') }}
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+				    {{ importmap('logged_app') }}
+                {% endif %}
 			{% endblock %}
 
 			{{ encore_entry_script_tags('app') }}
 		{% endblock %}
+
+		<meta name="title" content="{{ block('title') }} - Site web du club des belles images de Sarcelles"/>
+		<meta
+		name="description" content="With Meta Tags you can edit and experiment with your content then preview how your webpage will look on Google, Facebook, Twitter and more!"/>
+
+
+
+	{# <meta property="og:type" content="website"/>
+			<meta property="og:url" content="https://metatags.io/"/>
+			<meta property="og:title" content="Meta Tags — Preview, Edit and Generate"/>
+			<meta property="og:description" content="With Meta Tags you can edit and experiment with your content then preview how your webpage will look on Google, Facebook, Twitter and more!"/>
+			<meta property="og:image" content="https://metatags.io/images/meta-tags.png"/> #}
 	</head>
 	<body class="">
-	{# <body class="mr-[max(env(safe-area-inset-right),_theme(space.4))] ml-[max(env(safe-area-inset-left),_theme(space.4))]"> #}
-    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-    <header class="bg-blue-950 px-3 py-2 text-white">
-        <div class="max-w-7xl mx-auto">
-            <p class="text-right">Bonjour
-                <span class="font-bold sm:inline hidden">{{ app.user.firstname }} {{ app.user.lastname }}</span>
-                <span class="font-bold inline sm:hidden">{{ app.user.username }}</span>
-             |
-            <a class="underline hover:no-underline" href="{{ path("admin")}}" rel="noopener noreferrer">Accéder à l'administration</a>
-            </p>
-        </div>
-    </header>
-    {% endif %}
+		{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+			<header class="bg-blue-950 px-3 py-2 text-white">
+				<div class="max-w-7xl mx-auto flex items-center justify-end gap-2">
+					<p class="text-right">Bonjour
+						<span class="font-bold sm:inline hidden">{{ app.user.firstname }}
+							{{ app.user.lastname }}</span>
+						<span class="font-bold inline sm:hidden">{{ app.user.username }}</span>
+					</p>
+
+						{# <a class="underline hover:no-underline" href="{{ path("admin")}}" rel="noopener noreferrer">Accéder à l'administration</a> #}
+                    <button type="button" class="size-6 text-white content-center" data-open-logged-dialog>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-full w-full">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 13.5V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 9.75V10.5" />
+                        </svg>
+                    </button>
+				</div>
+			</header>
+		{% endif %}
 		{% include "includes/header.html.twig" %}
 		{% block body %}{% endblock %}
 		{% include "includes/footer.html.twig" %}
+
+        <dialog
+            data-logged-dialog
+            class="w-full mb-0 md:w-96 bg-white p-4 rounded-tl-lg rounded-tr-lg overflow-hidden mx-auto backdrop:backdrop-blur-sm backdrop:bg-slate-400/50"
+        >
+            <header>
+                <button type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </header>
+            <nav>
+                <ul class="flex flex-col gap-1.5">
+                    <li>
+                        <a class="block px-2 py-2 rounded-md hover:bg-sky-200" href="{{ path("admin")}}">Accéder à l'administration</a>
+                    </li>
+                    <li>
+                        <a class="block px-2 py-2 rounded-md bg-red-500 hover:bg-red-700 text-white" href="{{ path("app_logout")}}">
+                            Déconnexion
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </dialog>
 	</body>
 </html>

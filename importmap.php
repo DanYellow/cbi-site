@@ -20,6 +20,10 @@ return [
         'path' => './assets/backend/app.js',
         'entrypoint' => true,
     ],
+    'logged_app' => [
+        'path' => './assets/logged-user.js',
+        'entrypoint' => true,
+    ],
     '@hotwired/stimulus' => [
         'version' => '3.2.2',
     ],
