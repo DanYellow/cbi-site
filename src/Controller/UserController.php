@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Album;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,7 +22,6 @@ final class UserController extends AbstractController
         )]
         ?User $user
     ): Response {
-        dd($user);
         if (!$user) {
             throw $this->createNotFoundException(
                 'No product found for id '
@@ -35,6 +35,12 @@ final class UserController extends AbstractController
     #[Route(['/profil/{username}/albums'], name: 'get_member_albums')]
     public function memberAlbums(
         #[MapEntity(
+            class: Album::class,
+            expr: 'repository.findBy({ "user": username }, {})',
+            message: 'The album does not exist'
+        )]
+        iterable $listAlbums,
+        #[MapEntity(
             expr: 'repository.findOneBy({ "username": username }, {})',
             message: 'The user does not exist'
         )]
@@ -42,7 +48,26 @@ final class UserController extends AbstractController
     ): Response {
         if (!$user) {
             throw $this->createNotFoundException(
-                'No product found for id '
+                'No user found for id '
+            );
+        }
+        return $this->render('user/index.html.twig', [
+            'controller_name' => 'UserController',
+        ]);
+    }
+
+    #[Route(['/profil/{username}/albums/{album_name}'], name: 'get_album')]
+    public function getAlbum(
+        #[MapEntity(
+            class: Album::class,
+            expr: 'repository.findOneBy({ "slug": album_name }, {})',
+            message: 'The album does not exist'
+        )]
+        ?Album $album
+    ): Response {
+        if (!$album) {
+            throw $this->createNotFoundException(
+                'No album found for id '
             );
         }
         return $this->render('user/index.html.twig', [
@@ -54,7 +79,6 @@ final class UserController extends AbstractController
     public function my_profile(
         #[CurrentUser] ?User $user
     ): Response {
-
         if (!$user) {
             throw $this->createNotFoundException();
         }

@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -59,8 +60,7 @@ class UserCrudController extends AbstractCrudController
             yield ArrayField::new('roles', 'Rôles')->setSortable(false)->setColumns(6);
             yield BooleanField::new('isActive', 'Est actif / active')
                 ->setDisabled($isAdminUser)
-                ->setHelp($isAdminUser ? "Ne peut pas être édité pour un administrateur" : "")
-            ;
+                ->setHelp($isAdminUser ? "Ne peut pas être édité pour un administrateur" : "");
             yield BooleanField::new('isVerified', 'Est vérifié(e)')
                 ->setDisabled($isAdminUser)
                 ->setHelp($isAdminUser ? "Ne peut pas être édité pour un administrateur" : "")
@@ -94,17 +94,21 @@ class UserCrudController extends AbstractCrudController
                     Crud::PAGE_INDEX,
                 );
         } else {
-            $userId = $this->getUser()->getId();
-
-            $actions->update(Crud::PAGE_INDEX, Action::DELETE, static function (Action $action) use ($userId) {
-                return $action->displayIf(static function (User $user) use ($userId) {
-                    return $user->getId() !== $userId;
+            $currentUserId = $this->getUser()->getId();
+            $actions->update(Crud::PAGE_INDEX, Action::DELETE, static function (Action $action) use ($currentUserId) {
+                return $action->displayIf(static function (User $user) use ($currentUserId, $action) {
+                    // $attributes = array('inert' => '');
+                    // if ((int)$user->getId() !== (int)$currentUserId) {
+                    //     // $attributes = array();
+                    // }
+                    // $action->setHtmlAttributes($attributes);
+                    return (int)$user->getId() !== (int)$currentUserId;
                 });
             });
 
-            $actions->update(Crud::PAGE_DETAIL, Action::DELETE, static function (Action $action) use ($userId) {
-                return $action->displayIf(static function (User $user) use ($userId) {
-                    return $user->getId() !== $userId;
+            $actions->update(Crud::PAGE_DETAIL, Action::DELETE, static function (Action $action) use ($currentUserId) {
+                return $action->displayIf(static function (User $user) use ($currentUserId) {
+                    return (int)$user->getId() !== (int)$currentUserId;
                 });
             });
 
@@ -178,5 +182,14 @@ class UserCrudController extends AbstractCrudController
         }
 
         return $qb;
+    }
+
+    public function configureAssets(Assets $assets): Assets
+    {
+        return $assets->addHtmlContentToBody('<style>
+            [inert] {
+                opacity: 0.5;
+            }
+        </style>');
     }
 }
