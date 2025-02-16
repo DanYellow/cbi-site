@@ -71,7 +71,7 @@ html {
 
     &::after {
         content: "";
-        background-color:var(--color-amber-200);
+        background-color: var(--color-amber-200);
         position: absolute;
         inset: 0;
         transform: scaleY(0);

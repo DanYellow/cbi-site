@@ -51,8 +51,10 @@ class DashboardController extends AbstractDashboardController
             ->setEntityId($this->getUser()->getId());
         yield MenuItem::section("Administration")->setPermission('ROLE_ADMIN');
         yield MenuItem::linkToCrud('Membres', 'fa-solid fa-users', User::class)
-            ->setPermission('ROLE_ADMIN')->setBadge($this->userRepository->getNumberNonVerifiedUsers(), 'warning');
-        yield MenuItem::section();
+            ->setPermission('ROLE_ADMIN')
+            ->setBadge($this->userRepository->getNumberNonVerifiedUsers(), 'warning');
+        yield MenuItem::section("Autres");
+        yield MenuItem::linkToRoute('Accéder au site', 'fa-solid fa-globe', "app_index");
         yield MenuItem::linkToLogout('Déconnexion', 'fa fa-sign-out');
     }
 }

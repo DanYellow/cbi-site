@@ -32,14 +32,14 @@
 	<body class="h-full">
 		{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
 			<header class="bg-blue-950 px-3 py-2 text-white">
-				<div class="max-w-7xl mx-auto flex items-center justify-end gap-2">
+				<div class="max-w-6xl mx-auto flex items-center justify-end gap-2">
 					<p class="text-right">Bonjour
 						<span class="font-bold sm:inline hidden">{{ app.user.firstname }}
 							{{ app.user.lastname }}</span>
 						<span class="font-bold inline sm:hidden">{{ app.user.username }}</span>
 					</p>
 
-                    <button type="button" class="size-6 text-white content-center block rounded-md hocus:bg-sky-900" data-open-logged-dialog>
+                    <button type="button" class="size-6 text-white content-center block rounded-md hocus:text-amber-300 hocus:bg-sky-900" data-open-logged-dialog>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-full w-full">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 13.5V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 9.75V10.5" />
                         </svg>

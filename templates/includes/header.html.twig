@@ -7,15 +7,15 @@
     { label: "Contact", path: "dev_null" },
 ] %}
 
-<header class="flex gap-4 lg:flex-row flex-col justify-center max-w-7xl mx-auto mt-4">
+<header class="flex gap-4 lg:flex-row flex-col justify-center max-w-6xl mx-auto mt-4">
 	<a href="{{ path("app_index") }}" rel="noopener noreferrer" class="flex justify-start lg:justify-center ml-[max(env(safe-area-inset-left),_theme(space.4))]">
 		<img class="w-32" src="{{ asset("assets/images/logo-cbi.png")}}" alt="Logo club des belles images">
 	</a>
 	<nav class="flex justify-start items-center">
-		<ul class="scrollbar-none flex lg:justify-end gap-x-4 overflow-x-auto">
+		<ul class="scrollbar-none flex lg:justify-end gap-x-2.5 overflow-x-auto">
 			{% for menu_item in menu %}
-				<li class="">
-					<a class="whitespace-nowrap relative px-2 py-1 rounded-md block main-menu-item {{ app.request.get('_route') == menu_item.path ? "main-menu-active-item" : " " }} {{ loop.first ? 'ml-[max(env(safe-area-inset-left),_theme(space.4))]' : ''}} {{ loop.last ? 'mr-[max(env(safe-area-inset-right),_theme(space.4))]' : ''}}" href="{{ path(menu_item.path) }}">{{ menu_item.label }}</a>
+				<li>
+					<a class="whitespace-nowrap relative px-2 py-1 rounded-md block main-menu-item {{ app.request.get('_route') == menu_item.path ? "main-menu-active-item" : " " }} {{ loop.first ? 'ml-[max(env(safe-area-inset-left),_theme(space.4))] md:ml-0' : ''}} {{ loop.last ? 'mr-[max(env(safe-area-inset-right),_theme(space.4))] md:mr-0' : ''}}" href="{{ path(menu_item.path) }}">{{ menu_item.label }}</a>
 				</li>
 			{% endfor %}
 		</ul>
