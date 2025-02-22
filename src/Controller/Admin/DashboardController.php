@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[AdminDashboard(routePath: '/cbi-admin', routeName: 'admin')]
-#[IsGranted("ROLE_USER")]
+#[IsGranted("ROLE_MEMBER")]
 class DashboardController extends AbstractDashboardController
 {
     public function __construct(private UserRepository $userRepository) {}
