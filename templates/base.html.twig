@@ -12,7 +12,7 @@
 		{% block javascripts %}
 			{% block importmap %}
 				{{ importmap('app') }}
-                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                {% if is_granted("ROLE_MEMBER") %}
 				    {{ importmap('logged_app') }}
                 {% endif %}
 			{% endblock %}
@@ -30,7 +30,7 @@
         <meta property="og:image" content="https://metatags.io/images/meta-tags.png"/>
 	</head>
 	<body class="h-full">
-		{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+		{% if is_granted("ROLE_MEMBER") %}
 			<header class="bg-blue-950 px-3 py-2 text-white">
 				<div class="max-w-6xl mx-auto flex items-center justify-end gap-2">
 					<p class="text-right">Bonjour
@@ -51,7 +51,7 @@
 		{% block body %}{% endblock %}
 		{% include "includes/footer.html.twig" %}
 
-        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        {% if is_granted("ROLE_MEMBER") %}
             <dialog
                 data-logged-dialog
                 class="w-full mt-auto mb-0 md:w-96 bg-white p-4 rounded-tl-lg rounded-tr-lg overflow-hidden mx-auto backdrop:backdrop-blur-sm backdrop:bg-slate-400/50"
